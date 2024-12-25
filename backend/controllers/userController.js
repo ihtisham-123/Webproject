@@ -82,11 +82,11 @@ exports.verifyEmail = async (req, res) => {
     await user.save();
 
     // Generate token after verification
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
-    );
+    // const token = jwt.sign(
+    //   { id: user._id },
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: process.env.JWT_EXPIRES_IN }
+    // );
 
     res.status(200).json({
       status: 'success',

@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
+const orderRoutes = require('./routes/orderRoute'); // Add order routes
+const morgan = require('morgan');
 
 // Load environment variables
 dotenv.config();
@@ -14,8 +16,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(morgan('tiny'));
 // Routes
 app.use('/api', userRoutes);
+app.use('/api/orders', orderRoutes); // Add order routes
+
 
 // Test route
 app.get('/', (req, res) => {
