@@ -9,7 +9,7 @@ createRoot(document.getElementById('root')!).render(
    
    <BrowserRouter >
       <div className=" bg-[#1F1240] text-white px-24 relative  z-20 ">
-        <Navbar />
+        {/* <Navbar /> */}
 
       </div>
       <div className=" bg-[#1F1240] text-white">

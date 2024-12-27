@@ -1,39 +1,41 @@
-import React from 'react';
-import { Route,Routes } from 'react-router-dom';
-import Home from './assets/screens/Home';
-import OfferkiScreen from './assets/screens/OfferkiScreen';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Home from "./assets/screens/Home";
+import OfferkiScreen from "./assets/screens/OfferkiScreen";
+import FeaturesScreen from "./assets/screens/FeaturesScreen";
+import FAQScreen from "./assets/screens/FAQScreen";
+import Signin from "./assets/components/Signin";
+import Signup from "./assets/components/Signup";
+import AdminLayout from "./assets/screens/AdminLayout";
+import Dashboard from "./assets/components/Dashboard";
+import PlaceOrder from "./assets/components/PlaceOrder";
+import Withdraw from "./assets/components/Withdraw";
+import Referral from "./assets/components/Referral";
+import KYC from "./assets/components/KYC";
+import EmailVerification from "./assets/components/EmailVerification";
 
-import FeaturesScreen from './assets/screens/FeaturesScreen';
-import FAQScreen from './assets/screens/FAQScreen';
-import Signin from './assets/components/Signin';
-import Signup from './assets/components/Signup';
 const App: React.FC = () => {
   return (
-
-    
-    <>
     <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/Home" element={<Home />} />
-    
-    <Route path="/Offer" element={<OfferkiScreen/>} />
+      {/* Public routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="/Home" element={<Home />} />
+      <Route path="/Offer" element={<OfferkiScreen />} />
+      <Route path="/Global" element={<FeaturesScreen />} />
+      <Route path="/FAQ" element={<FAQScreen />} />
+      <Route path="/Signin" element={<Signin />} />
+      <Route path="/Signup" element={<Signup />} />
+      <Route path="/emailverification" element={<EmailVerification />} />
 
-
-    <Route path="/Global" element={<FeaturesScreen />} />
-    <Route path="/FAQ" element={<FAQScreen />} />
-    <Route path="/Signin" element={<Signin />} />
-    <Route path="/Signup" element={<Signup/>} />
-    
-    
-
-
-      {/* <Route path="/" element={<Home />} /> */}
+      {/* Protected routes with sidebar */}
+      <Route path="/" element={<AdminLayout />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/place-order" element={<PlaceOrder />} />
+        <Route path="/withdraw" element={<Withdraw />} />
+        <Route path="/referral" element={<Referral />} />
+        <Route path="/kyc" element={<KYC />} />
+      </Route>
     </Routes>
-
-
-      {/* Your other content */}
-      
-    </>
   );
 };
 

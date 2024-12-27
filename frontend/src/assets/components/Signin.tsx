@@ -1,83 +1,131 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Footer from './Footer';
+import Navbar from './Navbar';
+// import { postData } from '../services/api';
 
-import { useNavigate, } from 'react-router-dom';
-
-export default function Signin(){
+export default function Signin() {
   const navigate = useNavigate();
-  
-  const [isOpen, setIsOpen] = useState(false);
-  const handleNavigation = (url: string) => {
-         navigate(url);
-        //  setIsOpen(false);
-     };
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [passwordVisible, setPasswordVisible] = useState(false);
 
+  const handleNavigation = (url: string) => {
+    navigate(url);
+  };
 
   const togglePasswordVisibility = () => {
     setPasswordVisible((prev) => !prev);
   };
 
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/api/login', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      navigate('/dashboard');
+    } catch {
+      setErrors({ general: 'Invalid email or password' });
+    }
+  };
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+    // Clear error when user starts typing
+    if (errors[id]) {
+      setErrors((prev) => ({
+        ...prev,
+        [id]: "",
+      }));
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
-      <div className="bg-card rounded-lg shadow-lg p-8 max-w-sm w-full">
-        <h2 className="text-2xl font-bold text-foreground mb-6 text-center">Sign In</h2>
-        <form>
-          {/* Email Field */}
-          <div className="mb-4">
-            <label className="block text-muted-black mb-2" htmlFor="email">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="w-full p-2 border border-border rounded-lg bg-input text-black focus:outline-none focus:ring focus:ring-ring"
-              placeholder="sarah.johnson@example.com"
-              required
-            />
-          </div>
-
-          {/* Password Field */}
-          <div className="mb-4">
-            <label className="block text-muted-black mb-2" htmlFor="password">
-              Password
-            </label>
-            <div className="relative">
+    <>
+      <Navbar />
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="bg-card rounded-lg shadow-lg p-8 max-w-sm w-full">
+          <h2 className="text-2xl font-bold text-foreground mb-6 text-center">Log In</h2>
+          <form onSubmit={handleSubmit} method="POST">
+            {/* Email Field */}
+            <div className="mb-4">
+              <label className="block text-muted-black mb-2" htmlFor="email">
+                Email
+              </label>
               <input
-                type={passwordVisible ? 'text' : 'password'}
-                id="password"
+                type="email"
+                id="email"
                 className="w-full p-2 border border-border rounded-lg bg-input text-black focus:outline-none focus:ring focus:ring-ring"
-                placeholder=""
+                placeholder="sarah.johnson@example.com"
                 required
+                onChange={handleChange}
               />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute right-2 top-2 text-muted-black"
-                aria-label="Toggle password visibility"
-              >
-                {passwordVisible ? '👁' : '👁'}
-              </button>
             </div>
+
+            {/* Password Field */}
+            <div className="mb-4">
+              <label className="block text-muted-black mb-2" htmlFor="password">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={passwordVisible ? 'text' : 'password'}
+                  id="password"
+                  className="w-full p-2 border border-border rounded-lg bg-input text-black focus:outline-none focus:ring focus:ring-ring"
+                  placeholder=""
+                  onChange={handleChange}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-2 top-2 text-muted-black"
+                  aria-label="Toggle password visibility"
+                >
+                  {passwordVisible ? '👁' : '👁'}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="bg-primary text-primary-foreground w-full py-2 rounded-md shadow-smpx-4  
+                        bg-gradient-to-r from-[#3E62DE] to-[#B22ADF] hover:from-[#B22ADF] hover:to-[#3E62DE] 
+                        hover:bg-gradient-to-r transition-all duration-200"
+            >
+              SIGN IN
+            </button>
+          </form>
+
+          {/* Error Message */}
+          {errors.form && (
+            <div className="text-red-500 text-center mt-4">
+              {errors.form}
+            </div>
+          )}
+
+          {/* Sign Up Link */}
+          <div className="text-center mt-4">
+            <span className="text-muted-black">Don't have an account? </span>
+            <button onClick={() => handleNavigation('/Signup')} className="text-primary">
+              Sign up
+            </button>
           </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white p-2 rounded-lg hover:opacity-80 focus:outline-none focus:ring focus:ring-purple-500"
-          >
-            SIGN IN
-          </button>
-        </form>
-
-        {/* Sign Up Link */}
-        <div className="text-center mt-4">
-          <span className="text-muted-black">Don't have an account? </span>
-          <button  onClick={() => handleNavigation('/Signup')}
-          className="text-primary"
-          >Sign up </button>
-          
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }

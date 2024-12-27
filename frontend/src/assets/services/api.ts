@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+
 const api = axios.create({
-  baseURL: 'http://localhost:5000/', // Replace with your backend URL
+  baseURL: 'http://localhost:5000/api', // Replace with your backend URL
   headers: {
     'Content-Type': 'application/json',
   },
@@ -19,20 +20,23 @@ export const getData = async (endpoint: string) => {
 };
 
 // Example of a POST request
-export const postData = async (endpoint: string, data: any) => {
-    try {
-      const response = await api.post(endpoint, data);
-      return response.data;
-    } catch (error) {
-      console.error('Error posting data:', error);
-      throw error;
-    }
-  };
+export const postData = async <T>(endpoint: string, data: T) => {
+  try {
+    
+    const response = await api.post<T>(endpoint, data, {
+      headers: endpoint === '/signup' ? {} : { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error posting data:', error);
+    throw error;
+  }
+};
 
 // Example of a PUT request
-export const putData = async (endpoint: string, data: any) => {
+export const putData = async <T>(endpoint: string, data: T) => {
   try {
-    const response = await api.put(endpoint, data);
+    const response = await api.put<T>(endpoint, data);
     return response.data;
   } catch (error) {
     console.error('Error updating data:', error);

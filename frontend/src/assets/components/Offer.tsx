@@ -1,4 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Offer() {
+
+    const navigate = useNavigate();
+    const gotosignup = (url: string) => {
+      navigate(url);
+     //  setIsOpen(false);
+  };
     return (
         <section className="bg-background text-foreground p-8 flex flex-col items-center justify-center max-w-screen-xl mx-auto">
             <div className="max-w-3xl mx-auto text-center">
@@ -11,7 +19,11 @@ export default function Offer() {
                     bg-gradient-to-r from-[#3E62DE] to-[#B22ADF] 
                     hover:from-[#B22ADF] hover:to-[#3E62DE] 
                     text-primary-foreground
-                    transition-all duration-200">
+                    transition-all duration-200"
+                    
+                    onClick={()=>gotosignup('/Signup')}
+
+                    >
                     Get Funded
                 </button>
             </div>

@@ -1,32 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import FAQ from '../components/FAQ';
-import Footer from '../components/Footer';
-import PricingCards from '../components/PricingCard';
-import ContactForm from '../components/ContactForm';
-import Banner from '../components/Banner';
-import Global from '../components/Global';
-import Offer from '../components/Offer';
-import ProfitShareSlider from '../components/ProfitSlider';
-import { getData } from '../services/api';
-
+import React, { useEffect, useState } from "react";
+import FAQ from "../components/FAQ";
+import Footer from "../components/Footer";
+import PricingCards from "../components/PricingCard";
+import ContactForm from "../components/ContactForm";
+import Banner from "../components/Banner";
+import Global from "../components/Global";
+import Offer from "../components/Offer";
+import ProfitShareSlider from "../components/ProfitSlider";
+import { getData } from "../services/api";
+import Navbar from "../components/Navbar";
 const Home = () => {
-  const [data, setData] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getData('/'); // Replace with your endpoint
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
   return (
     <>
-    {/* <div>
+      {/* <div>
     <div>
         {data ? (
           <div>
@@ -39,17 +25,17 @@ const Home = () => {
       </div>
     </div> */}
 
-
-      <Banner/>
-      <PricingCards/> 
-      <Global/>
-      <Offer/>
+      <Navbar />
+      <Banner />
+      <PricingCards />
+      <Global />
+      <Offer />
       <FAQ />
-      <ProfitShareSlider/>
-      <ContactForm/>
+      <ProfitShareSlider />
+      <ContactForm />
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

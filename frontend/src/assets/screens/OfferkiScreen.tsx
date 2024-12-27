@@ -1,16 +1,18 @@
-import React from 'react'
-import Offer from '../components/Offer'
-import PricingCards from '../components/PricingCard'
-import Footer from '../components/Footer'
+import React from "react";
+import Offer from "../components/Offer";
+import PricingCards from "../components/PricingCard";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
 const OfferkiScreen = () => {
   return (
-    
     <>
-   < Offer/>
-    <PricingCards/>
-    <Footer/>   </>
-  )
-}
+      <Navbar/>
+      <Offer />
+      <PricingCards />
+      <Footer />
+    </>
+  );
+};
 
-export default OfferkiScreen
+export default OfferkiScreen;
