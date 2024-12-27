@@ -223,7 +223,7 @@ const SignupForm = () => {
                         bg-gradient-to-r from-[#3E62DE] to-[#B22ADF] hover:from-[#B22ADF] hover:to-[#3E62DE] 
                         hover:bg-gradient-to-r transition-all duration-200"
              >
-            <span  onClick={()=>gotoverify("/EmailVerification")}
+            <span  onClick={()=>gotoverify("/emailverification")}
        >Create Account </span>
 
           </button>

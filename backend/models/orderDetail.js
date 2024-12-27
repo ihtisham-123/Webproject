@@ -9,12 +9,13 @@ const orderDetailSchema = new mongoose.Schema({
   challengeType: {
     type: String,
     required: true,
-    enum: ['standard', 'aggressive', 'expert'],
+    enum: ['PHASE-1', 'PHASE-2', 'standard', 'aggressive', 'expert'], // Include the new values
+
   },
   accountSize: {
     type: String,
     required: true,
-    enum: ['5k', '10k', '25k', '50k'],
+     enum: ['1000','3000','5000', '10000', '25000', '50000','100000','200000'],
   },
   platform: {
     type: String,

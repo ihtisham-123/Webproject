@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import {jwtDecode} from 'jwt-decode';
-import axios from 'axios'; // Use axios directly
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 interface DecodedToken {
   id: string;
@@ -8,8 +8,25 @@ interface DecodedToken {
   email: string;
 }
 
+interface FormData {
+  username: string;
+  email: string;
+  challengeType: string;
+  accountSize: string;
+  platform: string;
+  couponCode: string;
+  transactionId: string;
+  paymentProof: File | null;
+}
+
+interface AccountSizePricing {
+  [key: string]: {
+    [key: string]: number;
+  };
+}
+
 export default function PlaceOrder() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     username: '',
     email: '',
     challengeType: '',
@@ -17,7 +34,7 @@ export default function PlaceOrder() {
     platform: '',
     couponCode: '',
     transactionId: '',
-    paymentProof: null as File | null,
+    paymentProof: null
   });
 
   const [total, setTotal] = useState(0);
@@ -26,30 +43,56 @@ export default function PlaceOrder() {
   const [userId, setUserId] = useState<string | null>(null);
 
   const challengeTypes = [
-    { value: 'standard', label: 'Standard Challenge', price: 100 },
-    { value: 'aggressive', label: 'Aggressive Challenge', price: 150 },
-    { value: 'expert', label: 'Expert Challenge', price: 200 },
-  ];
-
-  const accountSizes = [
-    { value: '5k', label: '$5,000', price: 50 },
-    { value: '10k', label: '$10,000', price: 100 },
-    { value: '25k', label: '$25,000', price: 250 },
-    { value: '50k', label: '$50,000', price: 500 },
+    { value: 'PHASE-1', label: 'PHASE-1' },
+    { value: 'PHASE-2', label: 'PHASE-2' },
   ];
 
   const platforms = [
-    { value: 'mt4', label: 'MetaTrader 4' },
-    { value: 'mt5', label: 'MetaTrader 5' },
-    { value: 'ctrader', label: 'cTrader' },
+    { value: 'MT4', label: 'MT4' },
+    { value: 'MT5', label: 'MT5' },
+    { value: 'ctrader', label: 'cTrader' }
   ];
+
+  const getAccountSizes = () => [
+    { value: '1000', label: '$1,000' },
+    { value: '3000', label: '$3,000' },
+    { value: '5000', label: '$5,000' },
+    { value: '10000', label: '$10,000' },
+    { value: '25000', label: '$25,000' },
+    { value: '50000', label: '$50,000' },
+    { value: '100000', label: '$100,000' },
+    { value: '200000', label: '$200,000' }
+  ];
+
+  const accountSizePricing: AccountSizePricing = {
+    'PHASE-1': {
+      '1000': 8,
+      '3000': 18,
+      '5000': 23,
+      '10000': 48,
+      '25000': 76,
+      '50000': 120,
+      '100000': 200,
+      '200000': 350
+    },
+    'PHASE-2': {
+      '1000': 10,
+      '3000': 22,
+      '5000': 28,
+      '10000': 42,
+      '25000': 90,
+      '50000': 150,
+      '100000': 250,
+      '200000': 400
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       const decoded: DecodedToken = jwtDecode(token);
       setUserId(decoded.id);
-      setFormData((prev) => ({
+      setFormData(prev => ({
         ...prev,
         username: decoded.username,
         email: decoded.email,
@@ -59,47 +102,42 @@ export default function PlaceOrder() {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [id]: value,
+      [id]: value
     }));
 
     if (id === 'challengeType' || id === 'accountSize') {
-      calculateTotal(
-        id === 'challengeType' ? value : formData.challengeType,
-        id === 'accountSize' ? value : formData.accountSize
-      );
+      const newChallengeType = id === 'challengeType' ? value : formData.challengeType;
+      const newAccountSize = id === 'accountSize' ? value : formData.accountSize;
+      
+      if (newChallengeType && newAccountSize) {
+        const price = accountSizePricing[newChallengeType]?.[newAccountSize] || 0;
+        setTotal(price);
+      }
     }
-  };
-
-  const calculateTotal = (challengeType: string, accountSize: string) => {
-    const challengePrice = challengeTypes.find((c) => c.value === challengeType)?.price || 0;
-    const sizePrice = accountSizes.find((s) => s.value === accountSize)?.price || 0;
-    setTotal(challengePrice + sizePrice);
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      paymentProof: file,
+      paymentProof: file
     }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-     const formDataToSend = {
+    const formDataToSend = {
       ...formData,
       total: total,
       userId: userId
     };
 
     const token = localStorage.getItem('token');
-    console.log(formDataToSend);
 
     try {
-      console.log(token);
-      await axios.post('http://localhost:5000/api/orders/create',formDataToSend,{
+      await axios.post('http://localhost:5000/api/orders/create', formDataToSend, {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -107,13 +145,7 @@ export default function PlaceOrder() {
       });
       setMessage('Order placed successfully!');
       setError('');
-      
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      } else {
-        console.log('An unknown error occurred.');
-      }
       const errorMessage = error instanceof Error ? error.message : 'Please try again.';
       setError(`Failed to place order: ${errorMessage}`);
       setMessage('');
@@ -165,11 +197,12 @@ export default function PlaceOrder() {
               value={formData.challengeType}
               onChange={handleInputChange}
               className="w-full bg-transparent border border-gray-600 rounded-lg p-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              required
             >
-              <option value="" className="bg-[#1a103d]">Select Challenge</option>
+              <option value="" className="bg-[#1a103d]">Select Challenge Type</option>
               {challengeTypes.map(type => (
                 <option key={type.value} value={type.value} className="bg-[#1a103d]">
-                  {type.label} (${type.price})
+                  {type.label}
                 </option>
               ))}
             </select>
@@ -177,19 +210,37 @@ export default function PlaceOrder() {
 
           <div>
             <label className="block text-gray-400 mb-1">Account Size*</label>
-            <select
-              id="accountSize"
-              value={formData.accountSize}
-              onChange={handleInputChange}
-              className="w-full bg-transparent border border-gray-600 rounded-lg p-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            >
-              <option value="" className="bg-[#1a103d]">Select Size</option>
-              {accountSizes.map(size => (
-                <option key={size.value} value={size.value} className="bg-[#1a103d]">
-                  {size.label} (${size.price})
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                id="accountSize"
+                value={formData.accountSize}
+                onChange={handleInputChange}
+                className="w-full bg-transparent border border-gray-600 rounded-lg p-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                required
+              >
+                <option value="" className="bg-[#1a103d]">Select Size</option>
+                {getAccountSizes().map(size => (
+                  <option key={size.value} value={size.value} className="bg-[#1a103d]">
+                    {size.label}
+                  </option>
+                ))}
+              </select>
+              {formData.challengeType && formData.accountSize && (
+                <div className="absolute right-12 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  ${accountSizePricing[formData.challengeType]?.[formData.accountSize]}
+                </div>
+              )}
+            </div>
+            {formData.challengeType && (
+              <div className="mt-2 space-y-1 text-sm text-gray-400">
+                {getAccountSizes().map(size => (
+                  <div key={size.value} className="flex justify-between">
+                    <span>{size.label}</span>
+                    <span>${accountSizePricing[formData.challengeType]?.[size.value]}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="relative">
@@ -199,6 +250,7 @@ export default function PlaceOrder() {
               value={formData.platform}
               onChange={handleInputChange}
               className="w-full bg-transparent border border-gray-600 rounded-lg p-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              required
             >
               <option value="" className="bg-[#1a103d]">Select Platform</option>
               {platforms.map(platform => (
