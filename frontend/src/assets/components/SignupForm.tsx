@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import {postData} from "../services/api";
+
 interface FormInputProps {
   label: string;
   id: string;
@@ -78,6 +79,9 @@ const SignupForm = () => {
     }
   };
 
+  const gotoverify=(url: string)=>{
+    navigate(url);
+  }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     postData("/signup", formData)
@@ -91,11 +95,11 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f1535] flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-[#141937] p-8 rounded-lg shadow-xl">
+    <div className="min-h-screen bg-transparent flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl bg-transparent p-8 rounded-lg shadow-xl">
         <h2 className="text-2xl font-bold text-white mb-6">Create Account</h2>
 
-        <form onSubmit={handleSubmit} method="POST" className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormInput
               label="Name"
@@ -213,13 +217,15 @@ const SignupForm = () => {
             />
           </div>
 
-          <button onClick={() => gotosignin("/Signin")}
-            type="submit" 
+          <button
+            type="submit"
             className="bg-primary text-primary-foreground w-full py-2 rounded-md shadow-smpx-4  
                         bg-gradient-to-r from-[#3E62DE] to-[#B22ADF] hover:from-[#B22ADF] hover:to-[#3E62DE] 
                         hover:bg-gradient-to-r transition-all duration-200"
-          >
-            Create Account
+             >
+            <span  onClick={()=>gotoverify("/EmailVerification")}
+       >Create Account </span>
+
           </button>
         </form>
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 interface PricingOffer {
   phase: string;
   amount: number;
@@ -86,7 +86,27 @@ const PricingCards: React.FC = () => {
         "Min Trading Days: 01",
       ],
     },
+    {
+      phase: "Phase-2",
+      amount: 5000,
+      price: 50,
+      originalPrice: 58.92,
+      features: [
+        "Profit Target: 08%",
+        "Daily Drawdown: 05%",
+        "Max Drawdown: 10%",
+        "Drawdown Type: Static",
+        "Profit Share after Passing: Upto 100%",
+        "EA Trading: Allowed",
+        "Min Trading Days: 01",
+      ],
+    },
   ];
+  const navigate = useNavigate();
+  const gotosignin=(url :string)=>{
+    navigate(url)
+
+  }
 
   const phases = ["HFT Pro", "Phase-1", "Phase-2"];
 
@@ -142,7 +162,9 @@ const PricingCards: React.FC = () => {
                       </li>
                     ))}
                   </ul>
-                  <button className="w-full py-3 rounded-lg text-white font-bold bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105">
+                  <button 
+                  onClick={()=>{gotosignin('/Signin')}}
+                  className="w-full py-3 rounded-lg text-white font-bold bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105">
                     Get Started →
                   </button>
                 </div>

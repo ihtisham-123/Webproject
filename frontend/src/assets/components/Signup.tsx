@@ -1,17 +1,25 @@
 
+import Footer from './Footer';
 import MarketNews from './MarketNews';
+import Navbar from './Navbar';
 import SignupForm from './SignupForm';
 
 const Signup = () => {
   return (
-    <div className="min-h-screen bg-[#0a0b1e] flex justify-center items-center ">
+    <>
+    <Navbar/>
+    <div className="min-h-screen bg-transparent flex justify-center items-center ">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid md:grid-cols-2  bg-blue-900 p-2">
+        <div className="grid md:grid-cols-2   p-2">
           <MarketNews />
           <SignupForm />
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
+    
+
   );
 };
 

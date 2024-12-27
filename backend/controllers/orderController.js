@@ -2,12 +2,14 @@
 
 const OrderDetail = require('../models/orderDetail');
 
+
 // Create a new order
 exports.createOrder = async (req, res) => {
   try {
     const { challengeType, accountSize, platform, couponCode, transactionId, paymentProof, total } = req.body;
-    const userId = req.user.id; // Assuming you have user information in req.user
+    const userId = req.user._id; // Assuming you have user information in req.user
 
+    console.log(challengeType, accountSize, platform, transactionId, total);
     if (!challengeType || !accountSize || !platform || !transactionId || !total) {
       return res.status(400).json({
         status: 'error',
@@ -25,8 +27,8 @@ exports.createOrder = async (req, res) => {
       paymentProof,
       total,
     });
-
-    await newOrder.save();
+    
+    newOrder.save();
 
     res.status(201).json({
       status: 'success',
@@ -41,6 +43,8 @@ exports.createOrder = async (req, res) => {
     });
   }
 };
+
+// Other controller functions (getAllOrders, getOrderById, updateOrderById, deleteOrderById) can be added here
 
 // Update an order by ID
 exports.updateOrderById = async (req, res) => {
