@@ -87,6 +87,7 @@ exports.signup = async (req, res) => {
         res.status(201).json({
             status: 'success',
             message: 'Verification code sent to email'
+            
         });
 
     } catch (error) {
@@ -307,34 +308,3 @@ exports.resetPassword = async (req, res) => {
     }
 };
 
-// exports.verifyEmail = async (req, res) => {
-//     try {
-//         const token = crypto.createHash('sha256').update(req.params.token).digest('hex');
-
-//         // Find user by token
-//         const user = await User.findOne({
-//             emailVerificationToken: token,
-//             emailVerificationExpires: { $gt: Date.now() }
-//         });
-
-//         if (!user) {
-//             return res.status(400).json({ message: 'Invalid or expired token' });
-//         }
-
-//         // Verify user
-//         user.isVerified = true;
-//         user.emailVerificationToken = undefined;
-//         user.emailVerificationExpires = undefined;
-//         await user.save();
-
-//         res.status(200).json({
-//             status: 'success',
-//             message: 'Email verified successfully. You can now log in.',
-//         });
-//     } catch (error) {
-//         res.status(500).json({
-//             status: 'error',
-//             message: error.message
-//         });
-//     }
-// };

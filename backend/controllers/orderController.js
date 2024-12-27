@@ -1,4 +1,5 @@
 // const OrderDetail = require('../models/orderDetail');
+const mongoose = require('mongoose');
 
 const OrderDetail = require('../models/orderDetail');
 
@@ -108,6 +109,39 @@ exports.getAllOrders = async (req, res) => {
   }
 };
 
+// const OrderDetail = require('../models/orderDetail');
+
+// const OrderDetail = require('../models/orderDetail');
+
+// Get all orders by user ID
+exports.getOrdersByUserId = async (req, res) => {
+  const userId = new mongoose.Types.ObjectId(req.params.userId);
+  try {
+    const orders = await OrderDetail.find({ 'user': userId }).populate('user');
+
+    console.log(orders);
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'No orders found for this user',
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      results: orders.length,
+      data: {
+        orders,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
 // Get a single order by ID
 exports.getOrderById = async (req, res) => {
   try {
@@ -133,6 +167,33 @@ exports.getOrderById = async (req, res) => {
     });
   }
 };
+
+
+// // Get a single order by ID
+// exports.getOrderById = async (req, res) => {
+//   try {
+//     const order = await OrderDetail.findById(req.params.id).populate('user');
+
+//     if (!order) {
+//       return res.status(404).json({
+//         status: 'error',
+//         message: 'Order not found',
+//       });
+//     }
+
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         order,
+//       },
+//     });
+//   } catch (error) {
+//     res.status(400).json({
+//       status: 'error',
+//       message: error.message,
+//     });
+//   }
+// };
 
 // Delete an order by ID
 exports.deleteOrderById = async (req, res) => {
