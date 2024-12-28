@@ -7,27 +7,30 @@ import Banner from "../components/Banner";
 import Global from "../components/Global";
 import Offer from "../components/Offer";
 import ProfitShareSlider from "../components/ProfitSlider";
-import { getData } from "../services/api";
 import Navbar from "../components/Navbar";
+import Popup from "../components/Popup";
+import CryptoRoller from "../components/CryptoRoller";
+import CryptoNewsFeed from "../components/CryptoNews";
+
 const Home = () => {
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
-      {/* <div>
-    <div>
-        {data ? (
-          <div>
-            <h1>Fetched Data:</h1>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
-          </div>
-        ) : (
-          <p>Loading...</p>
-        )}
-      </div>
-    </div> */}
-
+     {showPopup && <Popup onClose={() => setShowPopup(false)} />}
       <Navbar />
       <Banner />
+      <CryptoRoller/>
       <PricingCards />
+      <CryptoNewsFeed/>
       <Global />
       <Offer />
       <FAQ />
