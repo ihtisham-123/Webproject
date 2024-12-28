@@ -8,7 +8,8 @@ router.post('/create', authMiddleware.protect, lowercaseMiddleware, orderControl
 router.get('/', orderController.getAllOrders);
 router.get('/:id', orderController.getOrderById);
 router.get('/user/:userId', authMiddleware.protect, orderController.getOrdersByUserId); // New route for getting orders by user ID
-router.patch('/:id', authMiddleware.protect, lowercaseMiddleware, orderController.updateOrderById);
+router.patch('/:id',  orderController.updateOrderById);
 router.delete('/:id', authMiddleware.protect, orderController.deleteOrderById);
 
 module.exports = router;
+

@@ -14,6 +14,10 @@ import Referral from "./assets/components/Referral";
 import KYC from "./assets/components/KYC";
 import EmailVerification from "./assets/components/EmailVerification";
 
+
+
+import AdminPanel from "./assets/components/Admin/AdminPanel";
+import SearchOrders from "./assets/components/Admin/SearchOrders";
 const App: React.FC = () => {
   return (
     <Routes>
@@ -35,6 +39,14 @@ const App: React.FC = () => {
         <Route path="/referral" element={<Referral />} />
         <Route path="/kyc" element={<KYC />} />
       </Route>
+
+      {/* Admin routes */}
+      
+      <Route path="/admin" element={<AdminPanel />} />
+      <Route path="/admin/dashboard" element={<SearchOrders />} />
+
+
+
     </Routes>
   );
 };
