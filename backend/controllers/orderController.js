@@ -48,23 +48,59 @@ exports.createOrder = async (req, res) => {
 // Other controller functions (getAllOrders, getOrderById, updateOrderById, deleteOrderById) can be added here
 
 // Update an order by ID
+// exports.updateOrderById = async (req, res) => {
+//   try {
+//     const { challengeType, accountSize, platform, couponCode, transactionId, paymentProof, total } = req.body;
+//     const userId = req.user.id; // Assuming you have user information in req.user
+
+//     const updatedOrder = await OrderDetail.findByIdAndUpdate(
+//       req.params.id,
+//       {
+//         user: userId,
+//         challengeType,
+//         accountSize,
+//         platform,
+//         couponCode,
+//         transactionId,
+//         paymentProof,
+//         total,
+//       },
+//       { new: true, runValidators: true }
+//     );
+
+//     if (!updatedOrder) {
+//       return res.status(404).json({
+//         status: 'error',
+//         message: 'Order not found',
+//       });
+//     }
+
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         order: updatedOrder,
+//       },
+//     });
+//   } catch (error) {
+//     res.status(400).json({
+//       status: 'error',
+//       message: error.message,
+//     });
+//   }
+// };
+
+// const Order = require('../models/Order');
+
+
+// const OrderDetail = require('../models/orderDetail');
+
 exports.updateOrderById = async (req, res) => {
   try {
-    const { challengeType, accountSize, platform, couponCode, transactionId, paymentProof, total } = req.body;
-    const userId = req.user.id; // Assuming you have user information in req.user
+    const { isActive } = req.body;
 
     const updatedOrder = await OrderDetail.findByIdAndUpdate(
       req.params.id,
-      {
-        user: userId,
-        challengeType,
-        accountSize,
-        platform,
-        couponCode,
-        transactionId,
-        paymentProof,
-        total,
-      },
+      { isActive },
       { new: true, runValidators: true }
     );
 
@@ -88,6 +124,7 @@ exports.updateOrderById = async (req, res) => {
     });
   }
 };
+
 
 // Get all orders
 exports.getAllOrders = async (req, res) => {

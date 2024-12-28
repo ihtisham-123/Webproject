@@ -79,15 +79,14 @@ const SignupForm = () => {
     }
   };
 
-  const gotoverify=(url: string)=>{
-    navigate(url);
-  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     postData("/signup", formData)
     .then((response) => console.log(response))
     // .catch((error) => console.log(error))
     .catch((error) => console.error(error));
+    navigate("/emailverification");
 
 
 
@@ -157,7 +156,7 @@ const SignupForm = () => {
               </label>
               <select
                 id="country"
-                className="w-full p-2.5 bg-transparent border border-gray-600 rounded text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                className="w-full p-2.5 bg-[#1F1240] border border-gray-600 rounded text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                 value={formData.country}
                 onChange={handleChange}
                 required
@@ -223,7 +222,7 @@ const SignupForm = () => {
                         bg-gradient-to-r from-[#3E62DE] to-[#B22ADF] hover:from-[#B22ADF] hover:to-[#3E62DE] 
                         hover:bg-gradient-to-r transition-all duration-200"
              >
-            <span  onClick={()=>gotoverify("/emailverification")}
+            <span  
        >Create Account </span>
 
           </button>

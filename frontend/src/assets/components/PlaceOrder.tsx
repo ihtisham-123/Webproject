@@ -1,6 +1,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface DecodedToken {
   id: string;
@@ -41,6 +42,7 @@ export default function PlaceOrder() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [userId, setUserId] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const challengeTypes = [
     { value: 'PHASE-1', label: 'PHASE-1' },
@@ -145,11 +147,14 @@ export default function PlaceOrder() {
       });
       setMessage('Order placed successfully!');
       setError('');
+      navigate("/dashboard");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Please try again.';
       setError(`Failed to place order: ${errorMessage}`);
       setMessage('');
     }
+
+    
   };
 
   return (
