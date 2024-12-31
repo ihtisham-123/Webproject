@@ -32,6 +32,7 @@ export default function Signin() {
       const { token } = response.data;
       localStorage.setItem('token', token);
       navigate('/dashboard');
+      
     } catch {
       setErrors({ general: 'Invalid email or password' });
     }

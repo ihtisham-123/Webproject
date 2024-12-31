@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import AdminLogin from './AdminLogin';
 import SearchOrders from './SearchOrders';
 
@@ -8,7 +8,7 @@ const AdminPanel = () => {
   return (
     <div>
       {token ? (
-        <SearchOrders token={token} />
+        <SearchOrders  />
       ) : (
         <AdminLogin setToken={setToken} />
       )}
