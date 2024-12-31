@@ -23,7 +23,8 @@ const SearchOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [error, setError] = useState<string | null>(null);
   const token = localStorage.getItem('token');
-  
+  const broadcastChannel = new BroadcastChannel('dashboard-reload');
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null); // Clear previous errors
@@ -56,6 +57,7 @@ const SearchOrders = () => {
           order._id === orderId ? { ...order, isActive: !currentStatus } : order
         )
       );
+      broadcastChannel.postMessage('reload-dashboard');
     } catch (error) {
       console.error('Error toggling order status:', error);
     }

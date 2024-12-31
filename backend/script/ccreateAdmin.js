@@ -6,7 +6,7 @@ const Admin = require('../models/Admin');
 
 dotenv.config();
 
-mongoose.connect("mongodb://localhost:27017/webproject01")
+mongoose.connect("mongodb+srv://mjprods47:dS0KpTpJqQFSk3KD@cluster0.11diz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.error('MongoDB connection error:', err));
 
