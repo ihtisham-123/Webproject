@@ -42,3 +42,14 @@ exports.searchOrders = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getOrdersByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const orders = await Order.find({ user: userId }).populate('user').sort({ createdAt: -1 });
+
+    res.json({ success: true, orders });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
