@@ -30,7 +30,7 @@ const AdminLogin = ({ setToken }: { setToken: (token: string) => void }) => {
       const { token } = response.data;
       localStorage.setItem('token', token);
       setToken(token);
-      navigate('/admin/dashboard');
+      navigate('/admin/dashboard/users');
     } catch {
       setErrors({ general: 'Invalid email or password' });
     }

@@ -1,5 +1,6 @@
+import email from '../download.jpg'
 
-
+import support from '../download(1).jpg'
 export default function Widget() {
   return (
     <div className="flex flex-col md:flex-row items-center justify-center md:justify-between bg-background p-20 text-left space-y-6 md:space-y-0 md:space-x-8 max-w-screen-xl mx-auto">
@@ -11,14 +12,14 @@ export default function Widget() {
         <div className="space-y-6">
           <div className="flex items-center">
             <span className="mr-4 text-secondary">
-              <img alt="email-icon" src="/api/placeholder/24/24" className="w-6 h-6" />
+              <img alt="email-icon" src={email} className="w-7 h-7 rounded-xl" />
             </span>
             <span className="text-muted-foreground">Email: support@fundedbullfix.com</span>
           </div>
 
           <div className="flex items-center">
             <span className="mr-4 text-secondary">
-              <img alt="support-icon" src="/api/placeholder/24/24" className="w-6 h-6" />
+              <img alt="support-icon" src={support} className="w-7 h-7 bg-transparent rounded-xl" />
             </span>
             <span className="text-muted-foreground">Support available 24/5</span>
           </div>

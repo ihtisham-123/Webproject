@@ -1,6 +1,8 @@
 import { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import {postData} from "../services/api";
+import { postData } from "../services/api";
+import "react-phone-input-2/lib/style.css";
+import PhoneInput from "react-phone-input-2";
 
 interface FormInputProps {
   label: string;
@@ -44,7 +46,7 @@ const FormInput: React.FC<FormInputProps> = ({
 const SignupForm = () => {
   const navigate = useNavigate();
 
-  const gotosignin = ( url :string) => {
+  const gotosignin = (url: string) => {
     navigate(url);
   };
   const [formData, setFormData] = useState({
@@ -78,17 +80,20 @@ const SignupForm = () => {
       }));
     }
   };
-
+  const handlePhoneChange = (value: string) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      phoneNumber: value,
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     postData("/signup", formData)
-    .then((response) => console.log(response))
-    // .catch((error) => console.log(error))
-    .catch((error) => console.error(error));
+      .then((response) => console.log(response))
+      // .catch((error) => console.log(error))
+      .catch((error) => console.error(error));
     navigate("/emailverification");
-
-
 
     console.log("Form submitted:", formData);
   };
@@ -147,39 +152,43 @@ const SignupForm = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="mb-4">
-              <label
-                htmlFor="country"
-                className="block text-sm font-medium text-white mb-1"
-              >
-                Country
-                <span className="text-red-500 ml-1">*</span>
-              </label>
+              <label htmlFor="country">Country</label>
               <select
                 id="country"
-                className="w-full p-2.5 bg-[#1F1240] border border-gray-600 rounded text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                 value={formData.country}
                 onChange={handleChange}
+                className="w-full p-2.5 bg-[#1F1240] border border-gray-600 rounded text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                 required
               >
-
                 <option value="">Select Country</option>
                 <option value="US">United States</option>
                 <option value="UK">United Kingdom</option>
                 <option value="CA">Canada</option>
+                <option value="AU">Australia</option>
+                <option value="IN">India</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="JP">Japan</option>
+                <option value="CN">China</option>
                 {/* Add more countries as needed */}
-              
               </select>
             </div>
-
-            <FormInput
-              label="Phone Number"
-              id="phoneNumber"
-              required
-              placeholder="Your phone number"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              error={errors.phoneNumber}
-            />
+           
+            <div className="">
+              <label htmlFor="phoneNumber">Phone Number</label>
+              <PhoneInput
+                country={"us"}
+                value={formData.phoneNumber}
+                onChange={handlePhoneChange}
+                inputProps={{
+                  name: "phoneNumber",
+                  required: true,
+                  autoFocus: false,
+                }}
+                containerClass="w-full"
+                inputClass="w-full p-2.5 bg-[#1F1240] border border-gray-600 rounded text-black focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              />
+            </div>
           </div>
 
           <FormInput
@@ -194,7 +203,7 @@ const SignupForm = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormInput
-              label="State (Optional)"
+              label="State "
               id="state"
               placeholder="Your state"
               value={formData.state}
@@ -202,7 +211,7 @@ const SignupForm = () => {
             />
 
             <FormInput
-              label="City (Optional)"
+              label="City "
               id="city"
               placeholder="Your city"
               value={formData.city}
@@ -210,7 +219,7 @@ const SignupForm = () => {
             />
 
             <FormInput
-              label="Zip Code (Optional)"
+              label="Zip Code "
               id="zipCode"
               placeholder="Your zip code"
               value={formData.zipCode}
@@ -223,10 +232,8 @@ const SignupForm = () => {
             className="bg-primary text-primary-foreground w-full py-2 rounded-md shadow-smpx-4  
                         bg-gradient-to-r from-[#3E62DE] to-[#B22ADF] hover:from-[#B22ADF] hover:to-[#3E62DE] 
                         hover:bg-gradient-to-r transition-all duration-200"
-             >
-            <span  
-       >Create Account </span>
-
+          >
+            <span>Create Account </span>
           </button>
         </form>
 
@@ -236,7 +243,7 @@ const SignupForm = () => {
             onClick={() => gotosignin("/Signin")}
             className="text-primary"
           >
-            Sign In{" "}
+            Sign In
           </button>
         </div>
       </div>

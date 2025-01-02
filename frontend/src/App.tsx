@@ -18,7 +18,7 @@ import EmailVerification from "./assets/components/EmailVerification";
 
 import AdminPanel from "./assets/components/Admin/AdminPanel";
 import SearchOrders from "./assets/components/Admin/SearchOrders";
-import { Users } from "lucide-react";
+import Users from "./assets/components/Admin/Users";
 const App: React.FC = () => {
   return (
     <Routes>
