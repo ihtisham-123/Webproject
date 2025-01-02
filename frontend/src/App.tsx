@@ -18,6 +18,7 @@ import EmailVerification from "./assets/components/EmailVerification";
 
 import AdminPanel from "./assets/components/Admin/AdminPanel";
 import SearchOrders from "./assets/components/Admin/SearchOrders";
+import { Users } from "lucide-react";
 const App: React.FC = () => {
   return (
     <Routes>
@@ -44,6 +45,7 @@ const App: React.FC = () => {
       
       <Route path="/admin" element={<AdminPanel />} />
       <Route path="/admin/dashboard" element={<SearchOrders />} />
+      <Route path="/admin/dashboard/users" element={<Users />} />
 
 
 

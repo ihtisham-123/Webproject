@@ -5,12 +5,16 @@ import Navbar from '../components/Navbar'
 
 const FAQScreen = () => {
   return (
-    
+
     <>
-    <Navbar/>
-    <FAQ/>
-    <Footer/>
-    
+      <Navbar />
+      <div className='flex  flex-col items-center justify-center'>
+        <FAQ />
+        <Footer />
+
+      </div>
+
+
     </>
   )
 }

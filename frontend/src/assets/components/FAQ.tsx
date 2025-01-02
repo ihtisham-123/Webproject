@@ -48,7 +48,7 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <div className="bg-black text-gray-300 py-12">
+    <div className="bg-black text-gray-300 py-20">
       <div className="container mx-auto px-4">
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}

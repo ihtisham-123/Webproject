@@ -1,5 +1,6 @@
 import { Instagram, Facebook, Twitter, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Logo from './Logo';
 
 export default function Footer() {
   const navigate = useNavigate();
@@ -24,12 +25,11 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <div 
-                className="bg-gradient-to-r from-[#3E62DE] to-[#B22ADF] w-10 h-10 rounded-full flex items-center justify-center cursor-pointer"
+                // className="bg-gradient-to-r from-[#3E62DE] to-[#B22ADF] w-10 h-10 rounded-full flex items-center justify-center cursor-pointer"
                 onClick={() => handleNavigation('/Home')}
               >
-                <span className="text-white font-bold">FX</span>
+                <Logo/>
               </div>
-              <h3 className="text-xl font-bold text-white">Funded Bull FX</h3>
             </div>
             <p className="text-sm leading-relaxed">
               Providing educational resources and insights into financial markets.

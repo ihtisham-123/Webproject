@@ -2,6 +2,7 @@ import { useState, useEffect, ChangeEvent } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
+// import PricingCards from './PricingCard';
 
 interface TradingStats {
   totalTrades: number;
@@ -113,6 +114,7 @@ const Dashboard = () => {
 
     return (
       <div className="bg-[#1A1625] p-4 rounded-lg border border-purple-500/20 h-32">
+        {/* <PricingCards/> */}
         <div className="text-sm text-gray-400 mb-2">{label}</div>
         <div className="text-xl text-white font-bold">{value}</div>
         <div className="h-16">
