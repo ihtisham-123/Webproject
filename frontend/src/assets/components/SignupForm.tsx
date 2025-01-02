@@ -161,11 +161,13 @@ const SignupForm = () => {
                 onChange={handleChange}
                 required
               >
+
                 <option value="">Select Country</option>
                 <option value="US">United States</option>
                 <option value="UK">United Kingdom</option>
                 <option value="CA">Canada</option>
                 {/* Add more countries as needed */}
+              
               </select>
             </div>
 

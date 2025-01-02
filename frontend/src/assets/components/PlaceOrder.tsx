@@ -2,6 +2,7 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 
 interface DecodedToken {
   id: string;
@@ -26,6 +27,84 @@ interface AccountSizePricing {
   };
 }
 
+interface PlatformSelectorProps {
+  onPlatformChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  onTransactionIdChange: (id: string) => void;
+}
+
+const PlatformSelector = ({ onPlatformChange, onTransactionIdChange }: PlatformSelectorProps) => {
+  const [platform, setPlatform] = useState('');
+  const [depositAddress, setDepositAddress] = useState('');
+  const [transactionId, setTransactionId] = useState('');
+
+  const platforms = [
+    { value: 'MT4', label: 'MT4' },
+    { value: 'MT5', label: 'MT5' },
+  ];
+
+  const generateTransactionId = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return 'TNX' + Array.from({ length: 20 }, () => 
+      chars.charAt(Math.floor(Math.random() * chars.length))
+    ).join('');
+  };
+
+  useEffect(() => {
+    if (platform) {
+      const newTransactionId = generateTransactionId();
+      const newDepositAddress = `${platform}Q${newTransactionId}`;
+      setDepositAddress(newDepositAddress);
+      setTransactionId(newTransactionId);
+      onTransactionIdChange(newTransactionId);
+    }
+  }, [platform]);
+
+
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setPlatform(e.target.value);
+    onPlatformChange(e);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="relative">
+        <label className="block text-gray-400 mb-1">Platform*</label>
+        <select
+          id="platform"
+          value={platform}
+          onChange={handleChange}
+          className="w-full bg-transparent border border-gray-600 rounded-lg p-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          required
+        >
+          <option value="" className="bg-[#1a103d]">Select Platform</option>
+          {platforms.map(p => (
+            <option key={p.value} value={p.value} className="bg-[#1a103d]">
+              {p.label}
+            </option>
+          ))}
+        </select>
+        {platform && (
+          <div className="absolute right-3 top-10 bg-yellow-500 text-black text-xs px-2 py-0.5 rounded">
+            Silver ⚡ Member
+          </div>
+        )}
+      </div>
+
+      {platform && (
+        <div className="mt-4 space-y-2">
+          <div className="flex justify-center">
+            <QRCodeSVG value={depositAddress} size={128} level="H" />
+          </div>
+          <div className="text-sm text-gray-400 text-center">
+            <p>Deposit Account: {depositAddress}</p>
+            <p className="mt-1">Transaction ID: {transactionId}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function PlaceOrder() {
   const [formData, setFormData] = useState<FormData>({
     username: '',
@@ -47,13 +126,41 @@ export default function PlaceOrder() {
   const challengeTypes = [
     { value: 'PHASE-1', label: 'PHASE-1' },
     { value: 'PHASE-2', label: 'PHASE-2' },
+    { value: 'HFT-Pro', label: 'HFT Pro' },
   ];
 
-  const platforms = [
-    { value: 'MT4', label: 'MT4' },
-    { value: 'MT5', label: 'MT5' },
-    { value: 'ctrader', label: 'cTrader' }
-  ];
+  const accountSizePricing: AccountSizePricing = {
+    'PHASE-1': {
+      '1000': 12,
+      '3000': 34,
+      '5000': 48,
+      '10000': 88,
+      '25000': 188,
+      '50000': 115,
+      '100000': 209,
+      '200000': 351
+    },
+    'PHASE-2': {
+      '1000': 5,
+      '3000': 11,
+      '5000': 19,
+      '10000': 34,
+      '25000': 84,
+      '50000': 41,
+      '100000': 69,
+      '200000': 122
+    },
+    'HFT-Pro': {
+      '1000': 12,
+      '3000': 34,
+      '5000': 48,
+      '10000': 88,
+      '25000': 188,
+      '50000': 115,
+      '100000': 209,
+      '200000': 351
+    }
+  };
 
   const getAccountSizes = () => [
     { value: '1000', label: '$1,000' },
@@ -65,29 +172,6 @@ export default function PlaceOrder() {
     { value: '100000', label: '$100,000' },
     { value: '200000', label: '$200,000' }
   ];
-
-  const accountSizePricing: AccountSizePricing = {
-    'PHASE-1': {
-      '1000': 8,
-      '3000': 18,
-      '5000': 23,
-      '10000': 48,
-      '25000': 76,
-      '50000': 120,
-      '100000': 200,
-      '200000': 350
-    },
-    'PHASE-2': {
-      '1000': 10,
-      '3000': 22,
-      '5000': 28,
-      '10000': 42,
-      '25000': 90,
-      '50000': 150,
-      '100000': 250,
-      '200000': 400
-    }
-  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -153,20 +237,14 @@ export default function PlaceOrder() {
       setError(`Failed to place order: ${errorMessage}`);
       setMessage('');
     }
-
-    
   };
 
   return (
     <div className="min-h-screen bg-[#1a103d] text-white p-6">
       <div className="max-w-xl mx-auto space-y-6">
         <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium">
-          Pay with CoinPayments
+          Pay with Binance
         </button>
-
-        <div className="text-center text-gray-400">
-          or with <span className="font-semibold text-white">Binance</span>
-        </div>
 
         <form onSubmit={handleSubmit} method='POST' className="space-y-4">
           <div>
@@ -248,28 +326,10 @@ export default function PlaceOrder() {
             )}
           </div>
 
-          <div className="relative">
-            <label className="block text-gray-400 mb-1">Platform*</label>
-            <select
-              id="platform"
-              value={formData.platform}
-              onChange={handleInputChange}
-              className="w-full bg-transparent border border-gray-600 rounded-lg p-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              required
-            >
-              <option value="" className="bg-[#1a103d]">Select Platform</option>
-              {platforms.map(platform => (
-                <option key={platform.value} value={platform.value} className="bg-[#1a103d]">
-                  {platform.label}
-                </option>
-              ))}
-            </select>
-            {formData.platform && (
-              <div className="absolute right-3 top-10 bg-yellow-500 text-black text-xs px-2 py-0.5 rounded">
-                Silver ⚡ Member
-              </div>
-            )}
-          </div>
+          <PlatformSelector 
+            onPlatformChange={handleInputChange}
+            onTransactionIdChange={(id) => setFormData(prev => ({ ...prev, transactionId: id }))}
+          />
 
           <div>
             <label className="block text-gray-400 mb-1">Coupon Code</label>
@@ -286,19 +346,6 @@ export default function PlaceOrder() {
                 Apply
               </button>
             </div>
-          </div>
-
-          <div>
-            <label className="block text-gray-400 mb-1">Your Transaction ID*</label>
-            <input
-              type="text"
-              id="transactionId"
-              value={formData.transactionId}
-              onChange={handleInputChange}
-              className="w-full bg-transparent border border-gray-600 rounded-lg p-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              placeholder="Enter your Transaction Id"
-              required
-            />
           </div>
 
           <div>

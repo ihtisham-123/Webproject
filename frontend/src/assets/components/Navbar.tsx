@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate, } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
+import Logo from './Logo';
 const Navbar = () => {
     const navigate = useNavigate();
 
@@ -26,10 +27,11 @@ const Navbar = () => {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <div 
-                        className="flex-shrink-0 cursor-pointer"
+                        className="cursor-pointer"
                         onClick={() => handleNavigation('/Home')}
                     >
-                        <span className="text-xl text-white font-bold">Bull FX</span>
+                        {/* <span className="text-xl text-white font-bold">Bull FX</span> */}
+                        <Logo />
                     </div>
 
                     {/* Desktop Navigation */}

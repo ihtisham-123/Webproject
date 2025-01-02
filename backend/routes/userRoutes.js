@@ -15,6 +15,7 @@ router.post('/verify-otp', userController.verifyOTP);
 router.post('/login', userController.login);
 router.post('/forgot-password', userController.forgotPassword);
 router.patch('/reset-password/:token', userController.resetPassword);
+router.get('/users', userController.getAllUsers);
 
 // Protected routes
 // router.use(authMiddleware.protect);
